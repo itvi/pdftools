@@ -1,0 +1,16 @@
+/* -------------
+ filepond 
+ --------------*/
+.filepond--item-panel {
+    border-radius: 0.2rem;
+}
+
+/* bordered drop area */
+.filepond--panel-root {
+    /* background-color: transparent; */
+    border-radius: 0.2rem;
+}
+
+li.nav-item:hover{
+    background-color:#c5cae9;
+}

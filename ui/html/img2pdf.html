@@ -1,0 +1,14 @@
+{{template "layout" .}}
+{{define "title"}}{{.Title}}{{end}}
+
+{{define "body"}}
+<div class="container">
+	<h3 class="mt-2">{{.Header}}</h3>
+	<input name="filepond" id="uploadfile" type="file" multiple />
+	<button id="upload" class="btn btn-primary">Start</button>
+</div>
+{{end}}
+
+{{define "js"}}
+<script src="/static/js/page/img2pdf.js"></script>
+{{end}}

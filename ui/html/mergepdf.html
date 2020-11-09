@@ -1,0 +1,13 @@
+{{template "layout" .}}
+{{define "title"}}{{.Title}}{{end}}
+
+{{define "body"}}
+<div class="container">
+	<h3 class="mt-2">{{.Header}}</h3>
+	<input name="filepond" type="file" multiple />
+</div>
+{{end}}
+
+{{define "js"}}
+<script src="/static/js/page/mergepdf.js"></script>
+{{end}}
