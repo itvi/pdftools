@@ -1,13 +1,14 @@
 package helper
 
 import (
-	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 // FileUpload upload single file
@@ -34,18 +35,18 @@ func FileUpload(r *http.Request, inputName string) (string, error) {
 func Upload(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(32 << 20) // 32MB is the default used by FormFile
 	if err != nil {
-		fmt.Fprintln(w, err)
-		return
+		log.Println("request parse multipart form error:", err)
 	}
 
 	files := r.MultipartForm.File["filepond"]
+
+	var unZipFiles []string
 
 	for i := range files { // loop through the files one by one
 		file, err := files[i].Open()
 		defer file.Close()
 		if err != nil {
 			log.Println("Open file error:", err)
-			return
 		}
 
 		out, err := os.Create("./upload/" + files[i].Filename)
@@ -76,7 +77,29 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Printf("File %s convert to %s successfully!", imgFile, pdfFile)
+
+		// put files to zip files slice
+		unZipFiles = append(unZipFiles, pdfFile)
 	}
+
+	// Zip files for download
+	rand.Seed(int64(time.Now().UnixNano()))
+	log.Println(rand.Int())
+	log.Println(randString(10))
+
+	randString := randString(10)
+	zipFile := "./download/" + randString + ".zip"
+	if err := ZipFiles(zipFile, unZipFiles); err != nil {
+		log.Println("zip files error:", err)
+	}
+	log.Println(zipFile)
+
+	//return zipFile
+
+	// // Download zip file
+	// if err := DownLoad("http://localhost:12345/download/"+zipFile, "all.zip"); err != nil {
+	// 	log.Println("Download zip file error:", err)
+	// }
 }
 
 // convert from type to type
@@ -93,4 +116,13 @@ func convert(from, to string) error {
 		log.Println(err)
 	}
 	return err
+}
+
+func randString(n int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
