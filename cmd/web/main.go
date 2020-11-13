@@ -19,7 +19,12 @@ func main() {
 	mux.HandleFunc("/mergepdf", handler.MergePDF) //
 
 	localIP := helper.GetLocalIP()
-	log.Println("Starting server on " + localIP + ":1234")
-	err := http.ListenAndServe(":1234", mux)
+
+	server := &http.Server{
+		Addr:    ":12345",
+		Handler: mux,
+	}
+	log.Println("Starting server on " + localIP + server.Addr)
+	err := server.ListenAndServe()
 	log.Fatal(err)
 }

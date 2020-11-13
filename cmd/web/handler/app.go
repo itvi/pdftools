@@ -55,12 +55,13 @@ func Convert(w http.ResponseWriter, r *http.Request) {
 
 // Remark: icon file not .ico
 func convert(from, to string) error {
-	app := "cmd"
-	arg0 := "/c"
+	// Windows use "cmd /c"
+	// app := "cmd"
+	// arg0 := "/c"
 	arg1 := "magick convert"
 	arg2 := from
 	arg3 := to
-	err := exec.Command(app, arg0, arg1, arg2, arg3).Run()
+	err := exec.Command(arg1, arg2, arg3).Run()
 	if err != nil {
 		log.Println(err)
 	}
