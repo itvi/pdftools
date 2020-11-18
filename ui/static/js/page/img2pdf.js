@@ -13,16 +13,32 @@ pond.setOptions({
     labelTapToUndo: ''
 });
 
+// finished processing a file
+// click button in imagePreview 
+pond.on('processfile', (error, file) => {
+    if (error) {
+        console.log('Oh no');
+        return;
+    }
+    console.log('File processed', file); // success
+
+    var fileName = JSON.parse(file.serverId); // from server
+
+    var a = document.createElement("a");
+    var url = "http://"+window.location.host+"/download/"+fileName;
+    //var linkText = document.createTextNode("single file");
+    //a.appendChild(linkText);
+    //a.title = "this is a title of a"
+    //a.classList.add("btn", "btn-primary")
+    a.setAttribute('href', url);
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    a.click();
+});
+
 // manual upload
 const uploadBtn = document.getElementById('upload');
 uploadBtn.addEventListener("click", function () {
-    // 依次上传，不是文件列表。
-    // pond.processFiles().then(files => {
-    //     files.forEach(file => {
-    //         console.log(file.filename);
-    //     });
-    // });
-
     var files = pond.getFiles();
     var formData = new FormData();
     files.forEach(f => {
@@ -36,10 +52,9 @@ uploadBtn.addEventListener("click", function () {
     xhr.onload = function () {
         if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
             console.log('upload success');
-            // go to download page
-           // window.location.href="./download/"
-         
-
+            var result = JSON.parse(xhr.responseText);
+            var href = "http://"+ window.location.host; // localhost:1234
+            window.location.href = href+"/download/"+result;         
         }
     };
     xhr.onerror = function (e) {
@@ -47,22 +62,3 @@ uploadBtn.addEventListener("click", function () {
     };
 })
 
-// 上传成功或失败 (trigger when click single file upload)
-pond.on('processfile', (error, file) => {
-    if (error) {
-        console.log('Oh no');
-        return;
-    }
-    console.log('File processed', file); // success
-    var fileName = file.filename.split(".")[0] + ".pdf";
-    var a = document.createElement("a");
-    var url = "http://localhost:1234/upload/";
-    var linkText = document.createTextNode("single file");
-    a.appendChild(linkText);
-    a.title = "this is a title of a"
-    a.classList.add("btn", "btn-primary")
-    a.setAttribute('href', url + fileName);
-    a.setAttribute('download', fileName);
-    document.body.appendChild(a);
-    // a.click();
-});

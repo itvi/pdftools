@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -26,12 +27,27 @@ func ImageToPDF(w http.ResponseWriter, r *http.Request) {
 	helper.Render(w, r, "./ui/html/img2pdf.html", PageData{"Image to PDF", "图片转PDF"})
 }
 
-// Upload upload file(s) to server
+// Upload upload file(s) to server. Return a file name from server.
 func Upload(w http.ResponseWriter, r *http.Request) {
-	helper.Upload(w, r)
+	if err := r.ParseMultipartForm(32 << 20); err != nil {
+		log.Println("ParseMultipartForm error:", err)
+		return
+	}
+	files := r.MultipartForm.File["filepond"]
+
+	out := helper.Upload(files)
+	log.Println("The file from server is :", out)
+
+	j, err := json.Marshal(out)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(j)
 }
 
-// Convert upload image file and convert to pdf file then download
+// upload image file and convert to pdf file then download
 func Convert(w http.ResponseWriter, r *http.Request) {
 	fname, err := helper.FileUpload(r, "filepond")
 	if err != nil {

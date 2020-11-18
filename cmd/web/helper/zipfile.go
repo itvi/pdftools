@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"io"
 	"os"
+	"path/filepath"
 )
 
 // ZipFiles compresses one or many files into a single zip file.
@@ -47,7 +48,7 @@ func AddFileToZip(zipWriter *zip.Writer, filename string) error {
 
 	// Using FileInfoHeader() above only uses the basename of the file. If we want
 	// to preserve the folder structure we can overwrite this with the full path.
-	header.Name = filename
+	header.Name = filepath.Base(filename)
 
 	// Change to deflate to gain better compression
 	// see http://golang.org/pkg/archive/zip/#pkg-constants
