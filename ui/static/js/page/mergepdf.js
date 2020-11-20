@@ -1,35 +1,49 @@
+FilePond.registerPlugin(
+    FilePondPluginFileValidateType,
+    FilePondPluginMediaPreview
+);
 const inputElement = document.querySelector('input[type="file"]');
-
 const pond = FilePond.create(inputElement);
 
 pond.setOptions({
     server: '/mergepdf',
-    instantUpload: false, // 不自动上传；默认为自动。
-    allowFileTypeValidation: false,
-    acceptedFileTypes: "pdf",
+    instantUpload: false,
+    allowFileTypeValidation: true,
+    acceptedFileTypes: ["application/pdf"],
+    allowProcess: false,  // disable upload(up-arrow) icon on file
+    allowReorder: true,
     labelIdle: '拖放文件或点击',
-    labelFileProcessing: '转换中',
-    labelFileProcessingComplete: '完成',
-    labelTapToCancel: '点击取消',
-    labelTapToUndo: ''
+    labelFileTypeNotAllowed: '格式错误！',
+    fileValidateTypeLabelExpectedTypes: '是PDF格式的文件吗？'
 });
 
-// 上传成功或失败
-pond.on('processfile', (error, file) => {
-    if (error) {
-        console.log('Oh no');
+const mergeBtn = document.getElementById('merge');
+mergeBtn.addEventListener('click',function(){
+    var files = pond.getFiles();
+    if(files.length<=1){
+        $.notify({
+            icon: 'fa fa-info-circle',
+            message: '请选择多个PDF文件进行合并！',
+            url: 'http://www.baidu.com',
+	        target: '_blank'
+        },{
+            type: "info",
+            //allow_dismiss: true,
+            placement:{
+                from:"top",
+                align: "center"
+            },
+            animate: {
+				enter: "animate__animated animate__fadeInDown",
+				exit: "animate__animated animate__fadeOutUp"
+			}
+        });
         return;
     }
-    console.log('File processed', file); // success
-    var fileName = file.filename.split(".")[0] + ".pdf";
-    var a = document.createElement("a");
-    var url = "http://localhost:8001/upload/";
-    // var linkText = document.createTextNode("chaolianjie");
-    // a.appendChild(linkText);
-    // a.title = "this is a title of a"
-    // a.classList.add("btn", "btn-primary")
-    a.setAttribute('href', url + fileName);
-    a.setAttribute('download', fileName);
-    document.body.appendChild(a);
-    a.click();
+
+    // var formData = new FormData();
+    // files.forEach(f=>{
+    //     formData.append("filepond",f.file)
+    // });
+    myAjaxUpload(files,"merge");
 });

@@ -5,10 +5,11 @@
 <div class="container">
 	<h3 class="mt-2">{{.Header}}</h3>
 	<input name="filepond" id="uploadfile" type="file" multiple />
-	<button id="upload" class="btn btn-primary">Start</button>
+	<button id="upload" class="btn btn-primary">转换</button>
 </div>
 {{end}}
 
 {{define "script"}}
+<script src="/static/js/filepond-plugin-image-preview.js"></script>
 <script src="/static/js/page/img2pdf.js"></script>
 {{end}}

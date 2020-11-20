@@ -36,3 +36,24 @@ func img2pdf(imgFile string) string {
 	log.Println(imgFile, "convert successfully!")
 	return pdf
 }
+
+func imageToPDF(files []string) []string {
+	log.Println("files is:", files)
+	//	mogrify -format pdf -- a.jpg c.png
+	app := "mogrify"
+	arg1 := "-format pdf --"
+	arg2 := strings.Join(files, " ")
+	log.Println("arg2:", arg2)
+	err := exec.Command(app, arg1, arg2).Run()
+	if err != nil {
+		log.Println(err)
+	}
+
+	// a.jpg b.jpg => a.pdf b.pdf
+	var pdfFiles []string
+	for _, file := range files {
+		pdfFile := "." + strings.Split(file, ".")[1] + ".pdf"
+		pdfFiles = append(pdfFiles, pdfFile)
+	}
+	return pdfFiles
+}

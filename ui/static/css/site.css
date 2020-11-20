@@ -14,3 +14,7 @@
 li.nav-item:hover{
     background-color:#c5cae9;
 }
+
+.filepond--item {
+    width: calc(50% - .5em);
+}

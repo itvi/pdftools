@@ -34,9 +34,12 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	files := r.MultipartForm.File["filepond"]
-
-	out := helper.Upload(files)
+	action := r.PostFormValue("action") // merge|img2pdf...
+	log.Println("action:", action)
+	out := helper.Upload(files, action)
 	log.Println("The file from server is :", out)
+
+	// upload + zip + download
 
 	j, err := json.Marshal(out)
 	if err != nil {
@@ -95,7 +98,7 @@ func mergePDF(files []string) error {
 	app := "pdftk"
 	arg0 := strings.Trim(fileNames, "[]")
 	arg1 := "cat output"
-	arg2 := "out.pdf1"
+	arg2 := "out.pdf"
 
 	err := exec.Command(app, arg0, arg1, arg2).Run()
 	if err != nil {

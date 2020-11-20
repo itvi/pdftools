@@ -13,6 +13,7 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static"))))
 	mux.Handle("/upload/", http.StripPrefix("/upload/", http.FileServer(http.Dir("./upload"))))
 	mux.Handle("/download/", http.StripPrefix("/download/", http.FileServer(http.Dir("./download"))))
+
 	mux.HandleFunc("/", handler.ImageToPDF)
 	mux.HandleFunc("/img2pdf", handler.ImageToPDF)
 	// mux.HandleFunc("/upload", handler.Convert)

@@ -7,6 +7,8 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
+	"pdftools/cmd/web/tool"
 	"time"
 )
 
@@ -31,9 +33,11 @@ func FileUpload(r *http.Request, inputName string) (string, error) {
 }
 
 // Upload can upload many files
-func Upload(files []*multipart.FileHeader) (result string) {
+func Upload(files []*multipart.FileHeader, action string) (result string) {
 	// ready for zip file
 	var convertedFiles []string
+
+	var uploadFiles []string
 
 	for i := range files { // loop through the files one by one
 		file, err := files[i].Open()
@@ -62,12 +66,37 @@ func Upload(files []*multipart.FileHeader) (result string) {
 
 		log.Printf("File %s uploaded successfully!", files[i].Filename)
 
-		// convert image to pdf
-		pdfFile := img2pdf(files[i].Filename)
+		log.Println(filepath.Abs(files[i].Filename))
 
-		// put files to zip files slice
-		convertedFiles = append(convertedFiles, pdfFile)
+		if action == "img2pdf" {
+			// convert image to pdf
+			pdfFile := img2pdf(files[i].Filename)
+
+			// put files to zip files slice
+			convertedFiles = append(convertedFiles, pdfFile)
+		}
+
+		if action == "merge" {
+			// files[i].Filename is a.jpg
+			uploadFiles = append(uploadFiles, "./upload/"+files[i].Filename)
+		}
 	}
+
+	if action == "merge" {
+		if err := tool.MergePDF(uploadFiles); err != nil {
+			log.Println(err)
+		}
+	}
+
+	// switch action {
+	// case "img2pdf": // conver image files to pdf
+	// 	convertedFiles = imageToPDF(uploadFiles)
+	// 	log.Println(convertedFiles)
+	// case "merge":
+	// 	if err := tool.MergePDF(uploadFiles); err != nil {
+	// 		log.Println(err)
+	// 	}
+	// }
 
 	// Zip files for download
 	rand.Seed(int64(time.Now().UnixNano()))
