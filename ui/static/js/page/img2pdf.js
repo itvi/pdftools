@@ -25,7 +25,7 @@ pond.on('processfile', (error, file) => {
     var fileName = JSON.parse(file.serverId); // from server
 
     var a = document.createElement("a");
-    var url = "http://"+window.location.host+"/download/"+fileName;
+    var url = "http://" + window.location.host + "/download/" + fileName;
     //var linkText = document.createTextNode("single file");
     //a.appendChild(linkText);
     //a.title = "this is a title of a"
@@ -38,30 +38,33 @@ pond.on('processfile', (error, file) => {
 
 // manual upload
 const uploadBtn = document.getElementById('upload');
-uploadBtn.addEventListener("click", function () {
+var spinner = document.getElementById('spinner');
+
+uploadBtn.addEventListener("click", function() {
+
     var files = pond.getFiles();
-    if(files.length==0){
+    if (files.length == 0) {
         $.notify({
             icon: 'fa fa-info-circle',
-	        // title: 'Bootstrap notify',
-	        message: '请选择图片!',
-	        url: 'http://www.baidu.com',
-	        target: '_blank'
-        },{
+            // title: 'Bootstrap notify',
+            message: '请选择图片!',
+            url: 'http://www.baidu.com',
+            target: '_blank'
+        }, {
             type: "info",
             //allow_dismiss: true,
-            placement:{
-                from:"top",
+            placement: {
+                from: "top",
                 align: "center"
             },
             animate: {
-				enter: "animate__animated animate__fadeInDown",
-				exit: "animate__animated animate__fadeOutUp"
-			}
+                enter: "animate__animated animate__fadeInDown",
+                exit: "animate__animated animate__fadeOutUp"
+            }
         });
         return;
     }
-
-    myAjaxUpload(files,"img2pdf");
-})
-
+    spinner.style.display = "block";
+    this.hidden = true;
+    myAjaxUpload(files, "img2pdf");
+});
