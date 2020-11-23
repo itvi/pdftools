@@ -7,7 +7,7 @@ pond.setOptions({
     // server: '/upload',
     // add additional data 
     server:{
-        url:'http://localhost:12345',
+        url: 'http://' + window.location.host, // http://ip:port
         process:{
             url: '/upload',
             method: 'POST',

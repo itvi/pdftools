@@ -18,7 +18,7 @@ function myAjaxUpload(files, action) {
             document.getElementById('upload').hidden = false;
 
             var result = JSON.parse(xhr.responseText);
-            var href = "http://" + window.location.host; // localhost:1234
+            var href = "http://" + window.location.host;
             window.location.href = href + "/download/" + result;
 
         }
