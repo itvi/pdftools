@@ -30,30 +30,32 @@ func img2pdf(imgFile string) string {
 	pdf := "./upload/" + fileName + ".pdf"
 
 	if err := convert(img, pdf); err != nil {
-		log.Println("convert image to pdf error:", err)
+		log.Printf("File %s convert image to pdf error:%s", img, err)
 		return ""
 	}
-	log.Println(imgFile, "convert successfully!")
+	log.Printf("File %s convert successfully!", imgFile)
 	return pdf
 }
 
-func imageToPDF(files []string) []string {
+func imageToPDF(files []string) (out []string, err error) {
 	log.Println("files is:", files)
+	fileVars := strings.Join(files, " ")
+
 	//	mogrify -format pdf -- a.jpg c.png
-	app := "mogrify"
-	arg1 := "-format pdf --"
-	arg2 := strings.Join(files, " ")
-	log.Println("arg2:", arg2)
-	err := exec.Command(app, arg1, arg2).Run()
-	if err != nil {
-		log.Println(err)
+	plainCmd := "mogrify -format pdf -- " + fileVars
+	log.Println("plaincmd:", plainCmd)
+	sliceCmd := strings.Fields(plainCmd)
+	cmd := exec.Command(sliceCmd[0], sliceCmd[1:]...)
+	if err := cmd.Run(); err != nil {
+		log.Println("cmd run error:", err)
+		return nil, err
 	}
 
-	// a.jpg b.jpg => a.pdf b.pdf
+	/// a.jpg b.jpg => a.pdf b.pdf
 	var pdfFiles []string
 	for _, file := range files {
 		pdfFile := "." + strings.Split(file, ".")[1] + ".pdf"
 		pdfFiles = append(pdfFiles, pdfFile)
 	}
-	return pdfFiles
+	return pdfFiles, err
 }

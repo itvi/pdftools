@@ -18,13 +18,13 @@ type PageData struct {
 
 // Home page
 func Home(w http.ResponseWriter, r *http.Request) {
-	helper.Render(w, r, "./ui/html/home.html", "Hello Home Page")
+	Render(w, r, "./ui/html/home.html", "Hello Home Page")
 
 }
 
 // ImageToPDF is the main page of convert image to pdf
 func ImageToPDF(w http.ResponseWriter, r *http.Request) {
-	helper.Render(w, r, "./ui/html/img2pdf.html", PageData{"Image to PDF", "图片转PDF"})
+	Render(w, r, "./ui/html/img2pdf.html", PageData{"Image to PDF", "图片转PDF"})
 }
 
 // Upload upload file(s) to server. Return a file name from server.
@@ -36,7 +36,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	files := r.MultipartForm.File["filepond"]
 	action := r.PostFormValue("action") // merge|img2pdf...
 	log.Println("action:", action)
-	out := helper.Upload(files, action)
+	out := helper.UploadFiles(files, action)
 	log.Println("The file from server is :", out)
 
 	// upload + zip + download
@@ -52,7 +52,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 // upload image file and convert to pdf file then download
 func Convert(w http.ResponseWriter, r *http.Request) {
-	fname, err := helper.FileUpload(r, "filepond")
+	fname, err := helper.UploadFile(r, "filepond")
 	if err != nil {
 		log.Println(err)
 		return
@@ -89,7 +89,7 @@ func convert(from, to string) error {
 
 // MergePDF combine PDFs in the order you want
 func MergePDF(w http.ResponseWriter, r *http.Request) {
-	helper.Render(w, r, "./ui/html/mergepdf.html", PageData{"Merge PDF", "合并PDF"})
+	Render(w, r, "./ui/html/mergepdf.html", PageData{"Merge PDF", "合并PDF"})
 }
 
 func mergePDF(files []string) error {

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"pdftools/cmd/web/handler"
-	"pdftools/cmd/web/helper"
+	"pdftools/cmd/web/util"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	mux.HandleFunc("/upload", handler.Upload)
 	mux.HandleFunc("/mergepdf", handler.MergePDF) //
 
-	localIP := helper.GetLocalIP()
+	localIP := util.GetLocalIP()
 
 	server := &http.Server{
 		Addr:    ":12345",

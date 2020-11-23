@@ -3,15 +3,14 @@ package helper
 import (
 	"io"
 	"log"
-	"math/rand"
 	"mime/multipart"
 	"net/http"
 	"os"
-	"time"
+	"pdftools/cmd/web/util"
 )
 
-// FileUpload upload single file
-func FileUpload(r *http.Request, inputName string) (string, error) {
+// UploadFile upload single file
+func UploadFile(r *http.Request, inputName string) (string, error) {
 	r.ParseMultipartForm(32 << 20)
 	file, handler, err := r.FormFile(inputName) // retrieve the file from  form data
 	if err != nil {
@@ -30,14 +29,12 @@ func FileUpload(r *http.Request, inputName string) (string, error) {
 	return handler.Filename, nil
 }
 
-// Upload can upload many files
-func Upload(files []*multipart.FileHeader, action string) (result string) {
-	// ready for zip file
-	//var convertedFiles []string
-
+// UploadFiles upload multiple files
+func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 	var myFiles []string
 
-	for i := range files { // loop through the files one by one
+	// loop through the files one by one
+	for i := range files {
 		file, err := files[i].Open()
 		defer file.Close()
 		if err != nil {
@@ -46,7 +43,9 @@ func Upload(files []*multipart.FileHeader, action string) (result string) {
 			return
 		}
 
-		out, err := os.Create("./upload/" + files[i].Filename)
+		//out, err := os.Create("./upload/" + files[i].Filename)
+		uploadedFile := "./upload/" + util.RandString(10)
+		out, err := os.Create(uploadedFile)
 		defer out.Close()
 		if err != nil {
 			log.Println("Unable to create the file for writing. Check your write access privilege")
@@ -64,52 +63,58 @@ func Upload(files []*multipart.FileHeader, action string) (result string) {
 
 		log.Printf("File %s uploaded successfully!", files[i].Filename)
 
-		if action == "img2pdf" {
-			// convert image to pdf
-			pdfFile := img2pdf(files[i].Filename)
+		// // image to pdf
+		// if action == "img2pdf" {
+		// 	// // convert image to pdf
+		// 	// pdfFile := img2pdf(files[i].Filename)
 
-			// put files to zip files slice
-			myFiles = append(myFiles, pdfFile)
-		}
+		// 	// // put files to zip files slice
+		// 	// myFiles = append(myFiles, pdfFile)
 
-		if action == "merge" {
-			// files[i].Filename is a.jpg
-			myFiles = append(myFiles, "./upload/"+files[i].Filename)
-		}
+		// 	// collect all image files
+		// 	imgFiles = append(imgFiles, imgFile)
+		// }
+
+		// if action == "merge" {
+		// 	// files[i].Filename is a.jpg
+		// 	allFiles = append(allFiles, "./upload/"+files[i].Filename)
+		// }
+
+		myFiles = append(myFiles, uploadedFile)
 	}
 
-	if action == "merge" {
+	switch action {
+	case "img2pdf":
+		out, err := imageToPDF(myFiles)
+		if err != nil {
+			log.Println("image to pdf error:", err)
+			return
+		}
+		myFiles = out
+
+	case "merge":
 		out, err := MergePDF(myFiles)
 		log.Println("out is:", out)
 		if err != nil {
 			log.Println("merger error:", err)
 			return
 		}
-		myFiles = append(myFiles, out)
+		//myFiles = append(myFiles, out)
+		// combined pdf file is a single file
+		myFiles = []string{out}
 	}
 
 	// Zip files for download
-	rand.Seed(int64(time.Now().UnixNano()))
-	log.Println(rand.Int())
-	//log.Println(randString(10))
+	// rand.Seed(int64(time.Now().UnixNano()))
 
-	randString := RandString(10)
+	randString := util.RandString(10)
 	zipFile := "./download/" + randString + ".zip"
-	if err := ZipFiles(zipFile, myFiles); err != nil {
+	if err := util.ZipFiles(zipFile, myFiles); err != nil {
 		log.Println("zip files error:", err)
 		result = err.Error()
 		return
 	}
-	log.Println(zipFile)
+	//	log.Println(zipFile)
 
 	return randString + ".zip"
-}
-
-func RandString(n int) string {
-	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
 }

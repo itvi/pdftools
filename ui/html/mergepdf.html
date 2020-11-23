@@ -3,18 +3,21 @@
 {{define "css"}}
 <link href="/static/css/filepond-plugin-media-preview.min.css" rel="stylesheet"/>
 {{end}}
+
 {{define "body"}}
 <div class="container">
 	<h3 class="mt-2">{{.Header}}</h3>
 	<input name="filepond" type="file" multiple />
-    <button id="merge" class="btn btn-primary">Merge</button>
+    <button id="upload" class="btn btn-primary">Merge</button>
+    <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
+  	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  		Loading...
+	</button>
 </div>
 {{end}}
 
 {{define "script"}}
 <script src="/static/js/filepond-plugin-file-validate-type.min.js"></script>
 <script src="/static/js/filepond-plugin-media-preview.min.js"></script>
-<!-- <script src="/static/js/pdf.js"></script>
-     <script src="/static/js/pdf.worker.js"></script> -->
 <script src="/static/js/page/mergepdf.js"></script>
 {{end}}

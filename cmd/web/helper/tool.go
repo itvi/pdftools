@@ -4,6 +4,7 @@ import (
 	"log"
 	"math/rand"
 	"os/exec"
+	"pdftools/cmd/web/util"
 	"strings"
 	"time"
 )
@@ -15,7 +16,7 @@ func MergePDF(files []string) (out string, err error) {
 
 	// ready for out combined file
 	rand.Seed(int64(time.Now().UnixNano()))
-	out = "./upload/" + RandString(10) + ".pdf"
+	out = "./upload/" + util.RandString(10) + ".pdf"
 
 	plainCmd := "cpdf -merge " + fileVars + " -o " + out
 	log.Println("plaincmd:", plainCmd) // cpdf -merge ./upload/1.pdf ./upload/5.pdf -o out12.pdf

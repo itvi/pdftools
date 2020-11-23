@@ -17,7 +17,7 @@ pond.setOptions({
     fileValidateTypeLabelExpectedTypes: '是PDF格式的文件吗？'
 });
 
-const mergeBtn = document.getElementById('merge');
+const mergeBtn = document.getElementById('upload');
 mergeBtn.addEventListener('click',function(){
     var files = pond.getFiles();
     if(files.length<=1){
@@ -41,9 +41,5 @@ mergeBtn.addEventListener('click',function(){
         return;
     }
 
-    // var formData = new FormData();
-    // files.forEach(f=>{
-    //     formData.append("filepond",f.file)
-    // });
     myAjaxUpload(files,"merge");
 });
