@@ -4,7 +4,19 @@ const inputElement = document.querySelector('input[type="file"]');
 const pond = FilePond.create(inputElement);
 
 pond.setOptions({
-    server: '/upload',
+    // server: '/upload',
+    // add additional data 
+    server:{
+        url:'http://localhost:12345',
+        process:{
+            url: '/upload',
+            method: 'POST',
+            ondata:(formData)=>{
+                formData.append('action','img2pdf');
+                return formData;
+            }
+        }
+    },
     instantUpload: false, // 不自动上传；默认为自动。自动上传one by one ，每次一个，循环。
     labelIdle: '拖放文件或点击',
     labelFileProcessing: '转换中',
