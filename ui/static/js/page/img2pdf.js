@@ -56,24 +56,7 @@ uploadBtn.addEventListener("click", function() {
 
     var files = pond.getFiles();
     if (files.length == 0) {
-        $.notify({
-            icon: 'fa fa-info-circle',
-            // title: 'Bootstrap notify',
-            message: '请选择图片!',
-            url: 'http://www.baidu.com',
-            target: '_blank'
-        }, {
-            type: "info",
-            //allow_dismiss: true,
-            placement: {
-                from: "top",
-                align: "center"
-            },
-            animate: {
-                enter: "animate__animated animate__fadeInDown",
-                exit: "animate__animated animate__fadeOutUp"
-            }
-        });
+        notify('请选择图片！');
         return;
     }
     spinner.style.display = "block";

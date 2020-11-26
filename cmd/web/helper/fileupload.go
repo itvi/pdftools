@@ -36,6 +36,7 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 	// loop through the files one by one
 	for i := range files {
 		file, err := files[i].Open()
+		fileName := files[i].Filename
 		defer file.Close()
 		if err != nil {
 			log.Println("Open file error:", err)
@@ -44,7 +45,7 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 		}
 
 		//out, err := os.Create("./upload/" + files[i].Filename)
-		uploadedFile := "./upload/" + util.RandString(10)
+		uploadedFile := "./upload/" + util.RandString(10) + fileName
 		out, err := os.Create(uploadedFile)
 		defer out.Close()
 		if err != nil {
@@ -61,7 +62,7 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 			return
 		}
 
-		log.Printf("File %s uploaded successfully!", files[i].Filename)
+		log.Printf("File %s uploaded successfully!", fileName)
 
 		// // image to pdf
 		// if action == "img2pdf" {
@@ -93,20 +94,26 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 		myFiles = out
 
 	case "merge":
-		out, err := MergePDF(myFiles)
+		out, err := mergePDF(myFiles)
 		log.Println("out is:", out)
 		if err != nil {
 			log.Println("merger error:", err)
 			return
 		}
-		//myFiles = append(myFiles, out)
 		// combined pdf file is a single file
 		myFiles = []string{out}
+
+	case "split":
+		out, err := splitPDF(myFiles[0])
+		log.Println("out is:", out)
+		if err != nil {
+			log.Println("split error:", err)
+			return
+		}
+		myFiles = out
 	}
 
 	// Zip files for download
-	// rand.Seed(int64(time.Now().UnixNano()))
-
 	randString := util.RandString(10)
 	zipFile := "./download/" + randString + ".zip"
 	if err := util.ZipFiles(zipFile, myFiles); err != nil {

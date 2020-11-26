@@ -18,3 +18,9 @@ li.nav-item:hover{
 .filepond--item {
     width: calc(50% - .5em);
 }
+
+button.close{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}

@@ -1,10 +1,13 @@
 {{template "layout" .}}
 {{define "title"}}{{.Title}}{{end}}
+{{define "css"}}
+<link href="/static/css/filepond-plugin-media-preview.min.css" rel="stylesheet"/>
+{{end}}
 
 {{define "body"}}
 <div class="container">
-    <h3 class="mt-2">{{.Header}}</h3>
-    <input name="filepond" id="uploadfile" type="file" multiple />
+	<h3 class="mt-2">{{.Header}}</h3>
+	<input name="filepond" type="file"/>
     <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
     <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
   	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -14,6 +17,7 @@
 {{end}}
 
 {{define "script"}}
-<script src="/static/js/filepond-plugin-image-preview.js"></script>
-<script src="/static/js/page/img2pdf.js"></script>
+<script src="/static/js/filepond-plugin-file-validate-type.min.js"></script>
+<script src="/static/js/filepond-plugin-media-preview.min.js"></script>
+<script src="/static/js/page/splitpdf.js"></script>
 {{end}}

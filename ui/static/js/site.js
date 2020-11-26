@@ -27,3 +27,22 @@ function myAjaxUpload(files, action) {
         console.log('error', e)
     };
 }
+
+function notify(message){
+    $.notify({
+        icon: 'fa fa-info-circle',
+        message: message,
+    },{
+        type: "info",
+        allow_dismiss: true,
+        // delay: 50000,
+        placement:{
+            from:"top",
+            align: "center"
+        },
+        animate: {
+			enter: "animate__animated animate__fadeInDown",
+			exit: "animate__animated animate__fadeOutUp"
+		}
+    });
+}
