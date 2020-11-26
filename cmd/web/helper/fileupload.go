@@ -95,7 +95,7 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 
 	case "merge":
 		out, err := mergePDF(myFiles)
-		log.Println("out is:", out)
+		// log.Println("out is:", out)
 		if err != nil {
 			log.Println("merger error:", err)
 			return
@@ -105,7 +105,7 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 
 	case "split":
 		out, err := splitPDF(myFiles[0])
-		log.Println("out is:", out)
+		// log.Println("out is:", out)
 		if err != nil {
 			log.Println("split error:", err)
 			return

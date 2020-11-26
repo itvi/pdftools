@@ -38,12 +38,12 @@ func img2pdf(imgFile string) string {
 }
 
 func imageToPDF(files []string) (out []string, err error) {
-	log.Println("files is:", files)
+	// log.Println("files is:", files)
 	fileVars := strings.Join(files, " ")
 
 	//	mogrify -format pdf -- a.jpg c.png
 	plainCmd := "mogrify -format pdf -- " + fileVars
-	log.Println("plaincmd:", plainCmd)
+	// log.Println("plaincmd:", plainCmd)
 	sliceCmd := strings.Fields(plainCmd)
 	cmd := exec.Command(sliceCmd[0], sliceCmd[1:]...)
 	if err := cmd.Run(); err != nil {

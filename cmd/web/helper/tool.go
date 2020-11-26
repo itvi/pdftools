@@ -11,9 +11,9 @@ import (
 )
 
 func mergePDF(files []string) (out string, err error) {
-	log.Println("files is:", files) // [./upload/1.pdf ./upload/5.pdf]
+	// log.Println("files is:", files) // [./upload/1.pdf ./upload/5.pdf]
 	fileVars := strings.Join(files, " ")
-	log.Println("file vars:", fileVars) // ./upload/1.pdf ./upload/5.pdf
+	// log.Println("file vars:", fileVars) // ./upload/1.pdf ./upload/5.pdf
 
 	// ready for out combined file
 	rand.Seed(int64(time.Now().UnixNano()))
@@ -25,7 +25,7 @@ func mergePDF(files []string) (out string, err error) {
 	// qpdf --empty --pages 1.pdf 3.pdf -- 13.pdf
 	plainCmd := "qpdf --empty --pages " + fileVars + " -- " + out
 
-	log.Println("plaincmd:", plainCmd)
+	// log.Println("plaincmd:", plainCmd)
 
 	sliceA := strings.Fields(plainCmd)
 	cmd := exec.Command(sliceA[0], sliceA[1:]...)
@@ -40,10 +40,10 @@ func mergePDF(files []string) (out string, err error) {
 }
 
 func splitPDF(file string) (out []string, err error) {
-	log.Println("get file(with .pdf) :", file) // ./upload/rMqpsgoOCbC#编程风格.pdf
+	// log.Println("get file(with .pdf) :", file) // ./upload/rMqpsgoOCbC#编程风格.pdf
 	randFileName := util.RandString(10)
 	plainCmd := "qpdf " + file + " ./upload/" + randFileName + ".pdf --split-pages"
-	log.Println(plainCmd)
+	// log.Println(plainCmd)
 	sliceCmd := strings.Fields(plainCmd)
 	cmd := exec.Command(sliceCmd[0], sliceCmd[1:]...)
 	if err := cmd.Run(); err != nil {
