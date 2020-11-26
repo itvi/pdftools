@@ -18,12 +18,16 @@ pond.setOptions({
 });
 
 const mergeBtn = document.getElementById('upload');
+var spinner = document.getElementById('spinner');
+
 mergeBtn.addEventListener('click',function(){
     var files = pond.getFiles();
     if(files.length<=1){
         notify('请选择多个PDF文件进行合并！')
         return;
     }
+    spinner.style.display = "block";
+    this.hidden = true;
 
     myAjaxUpload(files,"merge");
 });

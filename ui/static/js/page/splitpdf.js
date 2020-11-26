@@ -17,12 +17,16 @@ pond.setOptions({
 });
 
 const splitBtn = document.getElementById('upload');
+var spinner = document.getElementById('spinner');
+
 splitBtn.addEventListener('click',function(){
     var files = pond.getFiles();
     if(files.length==0){
         notify('请选择PDF格式的文件！');
         return;
     }
+    spinner.style.display = "block";
+    this.hidden = true;
 
     myAjaxUpload(files,"split");
 });
