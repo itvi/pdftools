@@ -33,8 +33,18 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	}
 	files := r.MultipartForm.File["filepond"]
 	action := r.PostFormValue("action") // merge|img2pdf...
-	log.Println("action:", action)
-	out := helper.UploadFiles(files, action)
+	clockwise := r.PostFormValue("cw")
+	counterclockwise := r.PostFormValue("ccw")
+	var direction string
+	if clockwise == "true" {
+		direction = "cw"
+	}
+	if counterclockwise == "true" {
+		direction = "ccw"
+	}
+	degrees := r.PostFormValue("degree")
+	log.Println("action:", action, "degrees:", degrees)
+	out := helper.UploadFiles(files, action, direction, degrees)
 	log.Println("The file from server is :", out)
 
 	// upload + zip + download
@@ -55,4 +65,7 @@ func MergePDF(w http.ResponseWriter, r *http.Request) {
 
 func SplitPDF(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, "./ui/html/splitpdf.html", PageData{"Split PDF", "拆分PDF", "拆分"})
+}
+func RotatePDF(w http.ResponseWriter, r *http.Request) {
+	Render(w, r, "./ui/html/rotatepdf.html", PageData{"Rotate PDF", "旋转PDF", "旋转"})
 }

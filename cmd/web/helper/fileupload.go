@@ -30,7 +30,7 @@ func UploadFile(r *http.Request, inputName string) (string, error) {
 }
 
 // UploadFiles upload multiple files
-func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
+func UploadFiles(files []*multipart.FileHeader, action, direction, degree string) (result string) {
 	var myFiles []string
 
 	// loop through the files one by one
@@ -111,6 +111,15 @@ func UploadFiles(files []*multipart.FileHeader, action string) (result string) {
 			return
 		}
 		myFiles = out
+
+	case "rotate":
+		out, err := rotatePDF(myFiles[0], direction, degree)
+		// log.Println("out is:", out)
+		if err != nil {
+			log.Println("rotate error:", err)
+			return
+		}
+		myFiles = []string{out}
 	}
 
 	// Zip files for download

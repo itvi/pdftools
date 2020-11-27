@@ -1,0 +1,37 @@
+{{template "layout" .}}
+{{define "title"}}{{.Title}}{{end}}
+
+{{define "body"}}
+<div class="container">
+    <h3 class="mt-2">{{.Header}}</h3>
+    <input name="filepond" id="uploadfile" type="file" multiple />
+
+    <div class="mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="direction" type="radio" id="cw" value="cw"/>
+            <label class="form-check-label" for="cw">顺时针</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="direction" type="radio" id="ccw" value="ccw"/>
+            <label class="form-check-label" for="ccw">逆时针</label>
+        </div>
+
+        <select class="form-select mt-2" id="degrees" name="degrees">
+            <option value="90">90</option>
+            <option value="180">180</option>
+            <option value="270">270</option>
+        </select>
+    </div>
+    <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
+    <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
+  	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  		Loading...
+	</button>
+</div>
+{{end}}
+
+{{define "script"}}
+<script src="/static/js/filepond-plugin-file-validate-type.min.js"></script>
+<script src="/static/js/filepond-plugin-media-preview.js"></script>
+<script src="/static/js/page/rotatepdf.js"></script>
+{{end}}

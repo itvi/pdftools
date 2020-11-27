@@ -20,6 +20,7 @@ func main() {
 	mux.HandleFunc("/upload", handler.Upload)
 	mux.HandleFunc("/mergepdf", handler.MergePDF) //
 	mux.HandleFunc("/splitpdf", handler.SplitPDF)
+	mux.HandleFunc("/rotatepdf", handler.RotatePDF)
 
 	localIP := util.GetLocalIP()
 

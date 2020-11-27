@@ -67,3 +67,24 @@ func splitPDF(file string) (out []string, err error) {
 
 	return pages, err
 }
+
+func rotatePDF(file, direction, degree string) (out string, err error) {
+	// qpdf in.pdf out.pdf --rotate=+90
+	outFile := "./upload/" + util.RandString(10) + ".pdf"
+	var operator string
+	if direction == "cw" {
+		operator = "+"
+	}
+	if direction == "ccw" {
+		operator = "-"
+	}
+	plainCmd := "qpdf " + file + " " + outFile + " --rotate=" + operator + degree
+	// log.Println("plain:", plainCmd)
+	sliceCmd := strings.Fields(plainCmd)
+	cmd := exec.Command(sliceCmd[0], sliceCmd[1:]...)
+	if err := cmd.Run(); err != nil {
+		log.Println("cmd run error:", err)
+		return "", err
+	}
+	return outFile, nil
+}
