@@ -16,7 +16,7 @@ func main() {
 
 	mux.HandleFunc("/", handler.ImageToPDF)
 	mux.HandleFunc("/img2pdf", handler.ImageToPDF)
-	// mux.HandleFunc("/upload", handler.Convert)
+	mux.HandleFunc("/pdf2img", handler.PDFToImage)
 	mux.HandleFunc("/upload", handler.Upload)
 	mux.HandleFunc("/mergepdf", handler.MergePDF) //
 	mux.HandleFunc("/splitpdf", handler.SplitPDF)

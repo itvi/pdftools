@@ -25,6 +25,11 @@ func ImageToPDF(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, "./ui/html/img2pdf.html", PageData{"Image to PDF", "图片转PDF", "转换"})
 }
 
+// PDFToImage with jpg,png etc...
+func PDFToImage(w http.ResponseWriter, r *http.Request) {
+	Render(w, r, "./ui/html/pdf2img.html", PageData{"PDF to Image", "PDF转图片", "转换"})
+}
+
 // Upload upload file(s) to server. Return a file name from server.
 func Upload(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseMultipartForm(32 << 20); err != nil {
@@ -43,8 +48,9 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		direction = "ccw"
 	}
 	degrees := r.PostFormValue("degree")
+	format := r.PostFormValue("format")
 	log.Println("action:", action, "degrees:", degrees)
-	out := helper.UploadFiles(files, action, direction, degrees)
+	out := helper.UploadFiles(files, action, direction, degrees, format)
 	log.Println("The file from server is :", out)
 
 	// upload + zip + download
@@ -66,6 +72,7 @@ func MergePDF(w http.ResponseWriter, r *http.Request) {
 func SplitPDF(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, "./ui/html/splitpdf.html", PageData{"Split PDF", "拆分PDF", "拆分"})
 }
+
 func RotatePDF(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, "./ui/html/rotatepdf.html", PageData{"Rotate PDF", "旋转PDF", "旋转"})
 }

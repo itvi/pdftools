@@ -59,3 +59,23 @@ func imageToPDF(files []string) (out []string, err error) {
 	}
 	return pdfFiles, err
 }
+
+// pdfToImage can convert to many type of image(jpg,png...)
+func pdfToImage(files []string, format string) (out []string, err error) {
+	fileVars := strings.Join(files, " ")
+	plainCmd := "mogrify -format " + format + " -- " + fileVars
+	sliceCmd := strings.Fields(plainCmd)
+	cmd := exec.Command(sliceCmd[0], sliceCmd[1:]...)
+	if err := cmd.Run(); err != nil {
+		log.Println("cmd run error:", err)
+		return nil, err
+	}
+
+	var imgFiles []string
+	for _, file := range files {
+		imgFile := "." + strings.Split(file, ".")[1] + "." + format
+		imgFiles = append(imgFiles, imgFile)
+	}
+
+	return imgFiles, err
+}

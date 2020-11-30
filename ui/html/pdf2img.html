@@ -1,0 +1,29 @@
+{{template "layout" .}}
+{{define "title"}}{{.Title}}{{end}}
+
+{{define "body"}}
+<div class="container">
+    <h3 class="mt-2">{{.Header}}</h3>
+    <input name="filepond" id="uploadfile" type="file" multiple />
+
+    <div class="col-md-2 float-right border border-warning">
+        <select class="form-select" id="format" name="format">
+            <option value="0" selected>选择图片格式...</option>
+            <option value="jpg">jpg</option>
+            <option value="png">png</option>
+        </select>
+    </div>
+    <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
+
+    <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
+  	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  		Loading...
+	</button>
+</div>
+{{end}}
+
+{{define "script"}}
+<script src="/static/js/filepond-plugin-file-validate-type.min.js"></script>
+<script src="/static/js/filepond-plugin-media-preview.js"></script>
+<script src="/static/js/page/pdf2img.js"></script>
+{{end}}
