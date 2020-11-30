@@ -29,5 +29,9 @@ mergeBtn.addEventListener('click',function(){
     spinner.style.display = "block";
     this.hidden = true;
 
-    myAjaxUpload(files,"merge");
+    var obj ={
+        action:"merge"
+    };
+
+    myAjaxUpload(files,obj);
 });

@@ -1,4 +1,4 @@
-function myAjaxUpload(files, action) {
+function myAjaxUpload(files, obj) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/upload');
 
@@ -7,8 +7,14 @@ function myAjaxUpload(files, action) {
     files.forEach(f => {
         formData.append("filepond", f.file)
     });
-    formData.append("action", action); // merge|img2pdf...
+    formData.append("action", obj.action); // merge|img2pdf...
 
+    // additional data
+    formData.append("cw",obj.cw?obj.cw:""); // rotate pdf
+    formData.append("ccw",obj.ccw?obj.ccw:""); // rotate
+    formData.append("degree",obj.degree?obj.degree:""); // rotate
+    formData.append("format",obj.format?obj.format:""); // pdf2img
+    
     xhr.send(formData);
     xhr.onload = function() {
         if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {

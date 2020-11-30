@@ -25,8 +25,13 @@ splitBtn.addEventListener('click',function(){
         notify('请选择PDF格式的文件！');
         return;
     }
+
+    var obj = {
+        action: 'split'
+    }
+    
     spinner.style.display = "block";
     this.hidden = true;
 
-    myAjaxUpload(files,"split");
+    myAjaxUpload(files, obj);
 });

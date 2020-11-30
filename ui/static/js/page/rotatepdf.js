@@ -35,38 +35,15 @@ rotateBtn.addEventListener('click',function(){
         return;
     }
 
+    var obj = {
+        action: 'rotate',
+        cw: clockwise,
+        ccw: counterclockwise,
+        degree: degrees
+    }
+    
     spinner.style.display = "block";
     this.hidden = true;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST','/upload');
-
-    var formData = new FormData();
-    files.forEach(f=>{
-        formData.append("filepond",f.file)
-    });
-    formData.append("action","rotate");
-    formData.append("cw",clockwise);
-    formData.append("ccw",counterclockwise);
-    formData.append("degree",degrees);
-
-    xhr.send(formData);
-
-    xhr.onload=function(){
-        if((xhr.status>=200&&xhr.status<300)||xhr.status==304){
-            console.log('upload success');
-            
-            // switch button status
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('upload').hidden = false;
-
-            var result = JSON.parse(xhr.responseText);
-            var href = "http://" + window.location.host;
-            window.location.href = href + "/download/" + result;
-        }
-    };
-
-    xhr.onerror = function(e){
-        console.log('error',e)
-    };
+    myAjaxUpload(files,obj);
 });

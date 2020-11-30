@@ -61,5 +61,9 @@ uploadBtn.addEventListener("click", function() {
     }
     spinner.style.display = "block";
     this.hidden = true;
-    myAjaxUpload(files, "img2pdf");
+
+    var obj ={};
+    obj.action = "img2pdf";
+    
+    myAjaxUpload(files, obj);
 });
