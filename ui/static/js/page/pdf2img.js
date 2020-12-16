@@ -65,6 +65,11 @@ uploadBtn.addEventListener("click", function() {
         }
     }
     
+    // validate type
+    if(pond.status == 2){ // error
+        return;
+    }
+    
     var files = pond.getFiles();
     if (files.length == 0) {
         notify('请选择PDF文件！');

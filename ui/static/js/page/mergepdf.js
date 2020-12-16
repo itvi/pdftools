@@ -21,6 +21,11 @@ const mergeBtn = document.getElementById('upload');
 var spinner = document.getElementById('spinner');
 
 mergeBtn.addEventListener('click',function(){
+    // validate type
+    if(pond.status == 2){ // error
+        return;
+    }
+    
     var files = pond.getFiles();
     if(files.length<=1){
         notify('请选择多个PDF文件进行合并！')
