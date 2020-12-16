@@ -15,6 +15,7 @@ function myAjaxUpload(files, obj) {
     formData.append("degree",obj.degree?obj.degree:""); // rotate
     formData.append("format",obj.format?obj.format:""); // pdf2img
     formData.append("combine",obj.combine); // [img2pdf] combine multiple images to single pdf
+    formData.append("pdf2oneimg",obj.pdf2oneimg); // [pdf2img]
     
     xhr.send(formData);
     xhr.onload = function() {

@@ -63,8 +63,18 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pdf21imgStr := r.PostFormValue("pdf2oneimg")
+	if pdf21imgStr == "undefined" {
+		pdf21imgStr = "false"
+	}
+	pdf2oneimg, err := strconv.ParseBool(pdf21imgStr)
+	if err != nil {
+		log.Println("convert string to boolean error:", err)
+		return
+	}
+
 	log.Println("action:", action, "degrees:", degrees)
-	out := helper.UploadFiles(files, action, direction, degrees, format, combine)
+	out := helper.UploadFiles(files, action, direction, degrees, format, combine, pdf2oneimg)
 	log.Println("The file from server is :", out)
 
 	// upload + zip + download

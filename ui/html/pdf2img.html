@@ -6,19 +6,29 @@
     <h3 class="mt-2">{{.Header}}</h3>
     <input name="filepond" id="uploadfile" type="file" multiple />
 
-    <div class="col-md-2 float-right border border-warning">
-        <select class="form-select" id="format" name="format">
-            <option value="0" selected>选择图片格式...</option>
-            <option value="jpg">jpg</option>
-            <option value="png">png</option>
-        </select>
+    <div class="row g-3 align-items-center">
+        <div class="col">
+            <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="format" name="format">
+                <option value="0" selected>选择图片格式...</option>
+                <option value="jpg">jpg</option>
+                <option value="png">png</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <div class="form-check">
+                <input class="form-check-input" name="pdf2oneimg" type="checkbox" id="pdf2oneimg" />
+                <i class="fa fa-question-circle" title="勾选后将会把多个PDF转为一个图片文件"></i>
+            </div>
+        </div>
     </div>
-    <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
 
     <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
   	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-  		Loading...
-	</button>
+  	    Loading...
+    </button>
 </div>
 {{end}}
 

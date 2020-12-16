@@ -20,6 +20,7 @@ pond.setOptions({
         }
     },
     instantUpload: false,
+    allowReorder: true,
     allowFileTypeValidation: true,
     acceptedFileTypes: ["application/pdf"],
     allowProcess: false,
@@ -81,10 +82,12 @@ uploadBtn.addEventListener("click", function() {
         notify("请选择要转换的图片格式!")
         return;
     }
+    var checked = document.getElementById('pdf2oneimg').checked;
 
     var obj = {};
     obj.action = "pdf2img";
     obj.format = format;
+    obj.pdf2oneimg=checked;
     
     spinner.style.display = "block";
     this.hidden = true;
