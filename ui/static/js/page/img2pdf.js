@@ -1,4 +1,7 @@
-FilePond.registerPlugin(FilePondPluginImagePreview);
+FilePond.registerPlugin(
+    FilePondPluginImagePreview,
+    FilePondPluginFileValidateType
+);
 const inputElement = document.querySelector('input[type="file"]');
 
 const pond = FilePond.create(inputElement);
@@ -18,11 +21,16 @@ pond.setOptions({
         }
     },
     instantUpload: false, // 不自动上传；默认为自动。自动上传one by one ，每次一个，循环。
+    allowReorder: true,
+    allowFileTypeValidation: true,
+    acceptedFileTypes: ["image/*"],
     labelIdle: '拖放文件或点击',
     labelFileProcessing: '转换中',
     labelFileProcessingComplete: '完成',
     labelTapToCancel: '点击取消',
-    labelTapToUndo: ''
+    labelTapToUndo: '',
+    labelFileTypeNotAllowed: '格式错误！',
+    fileValidateTypeLabelExpectedTypes: '是图片格式的文件吗？'
 });
 
 // finished processing a file
@@ -53,7 +61,11 @@ const uploadBtn = document.getElementById('upload');
 var spinner = document.getElementById('spinner');
 
 uploadBtn.addEventListener("click", function() {
-
+    // validate type
+    if(pond.status == 2){ // error
+        return;
+    }
+    
     var files = pond.getFiles();
     if (files.length == 0) {
         notify('请选择图片！');
@@ -62,8 +74,10 @@ uploadBtn.addEventListener("click", function() {
     spinner.style.display = "block";
     this.hidden = true;
 
+    var checked = document.getElementById('combine').checked;
     var obj ={};
     obj.action = "img2pdf";
+    obj.combine = checked;
     
     myAjaxUpload(files, obj);
 });

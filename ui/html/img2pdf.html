@@ -5,6 +5,10 @@
 <div class="container">
     <h3 class="mt-2">{{.Header}}</h3>
     <input name="filepond" id="uploadfile" type="file" multiple />
+    <div class="form-check float-right">
+        <input class="form-check-input" name="combine" type="checkbox" id="combine" />
+        <i class="fa fa-question-circle" title="勾选后将会把多个图片转为一个PDF文件"></i>
+    </div>
     <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
     <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
   	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -14,6 +18,7 @@
 {{end}}
 
 {{define "script"}}
+<script src="/static/js/filepond-plugin-file-validate-type.min.js"></script>
 <script src="/static/js/filepond-plugin-image-preview.js"></script>
 <script src="/static/js/page/img2pdf.js"></script>
 {{end}}

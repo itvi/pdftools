@@ -14,6 +14,7 @@ function myAjaxUpload(files, obj) {
     formData.append("ccw",obj.ccw?obj.ccw:""); // rotate
     formData.append("degree",obj.degree?obj.degree:""); // rotate
     formData.append("format",obj.format?obj.format:""); // pdf2img
+    formData.append("combine",obj.combine); // [img2pdf] combine multiple images to single pdf
     
     xhr.send(formData);
     xhr.onload = function() {
@@ -26,7 +27,6 @@ function myAjaxUpload(files, obj) {
             var result = JSON.parse(xhr.responseText);
             var href = "http://" + window.location.host;
             window.location.href = href + "/download/" + result;
-
         }
     };
     xhr.onerror = function(e) {

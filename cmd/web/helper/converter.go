@@ -37,7 +37,7 @@ func img2pdf(imgFile string) string {
 	return pdf
 }
 
-func imageToPDF(files []string) (out []string, err error) {
+func imageToPDF(files []string, combine bool) (out []string, err error) {
 	// log.Println("files is:", files)
 	fileVars := strings.Join(files, " ")
 
@@ -56,6 +56,17 @@ func imageToPDF(files []string) (out []string, err error) {
 	for _, file := range files {
 		pdfFile := "." + strings.Split(file, ".")[1] + ".pdf"
 		pdfFiles = append(pdfFiles, pdfFile)
+	}
+
+	// combine images to single pdf file
+	if combine {
+		// merge pdf files
+		out, err := mergePDF(pdfFiles)
+		if err != nil {
+			log.Println("merger error:", err)
+			return nil, err
+		}
+		pdfFiles = []string{out}
 	}
 	return pdfFiles, err
 }

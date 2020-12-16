@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"pdftools/cmd/web/helper"
+	"strconv"
 )
 
 // PageData pass different string to page
@@ -40,6 +41,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	action := r.PostFormValue("action") // merge|img2pdf...
 	clockwise := r.PostFormValue("cw")
 	counterclockwise := r.PostFormValue("ccw")
+
 	var direction string
 	if clockwise == "true" {
 		direction = "cw"
@@ -49,8 +51,20 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	}
 	degrees := r.PostFormValue("degree")
 	format := r.PostFormValue("format")
+	combineStr := r.PostFormValue("combine") // combine images to single pdf(true|false)
+	log.Println("Upload combine:", combineStr)
+	log.Println("convert string to bool...")
+	if combineStr == "undefined" {
+		combineStr = "false"
+	}
+	combine, err := strconv.ParseBool(combineStr)
+	if err != nil {
+		log.Println("convert string to boolean error:", err)
+		return
+	}
+
 	log.Println("action:", action, "degrees:", degrees)
-	out := helper.UploadFiles(files, action, direction, degrees, format)
+	out := helper.UploadFiles(files, action, direction, degrees, format, combine)
 	log.Println("The file from server is :", out)
 
 	// upload + zip + download

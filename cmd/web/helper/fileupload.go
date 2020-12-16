@@ -30,7 +30,7 @@ func UploadFile(r *http.Request, inputName string) (string, error) {
 }
 
 // UploadFiles upload multiple files
-func UploadFiles(files []*multipart.FileHeader, action, direction, degree, format string) (result string) {
+func UploadFiles(files []*multipart.FileHeader, action, direction, degree, format string, combine bool) (result string) {
 	var myFiles []string
 
 	// loop through the files one by one
@@ -86,7 +86,7 @@ func UploadFiles(files []*multipart.FileHeader, action, direction, degree, forma
 
 	switch action {
 	case "img2pdf":
-		out, err := imageToPDF(myFiles)
+		out, err := imageToPDF(myFiles, combine)
 		if err != nil {
 			log.Println("image to pdf error:", err)
 			return
