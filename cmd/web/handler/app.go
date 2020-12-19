@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"pdftools/cmd/web/helper"
+	helper "pdftools/cmd/web/tool"
 	"strconv"
 )
 
