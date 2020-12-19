@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	helper "pdftools/cmd/web/tool"
+	"pdftools/cmd/web/tool"
 	"strconv"
 )
 
@@ -74,7 +74,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("action:", action, "degrees:", degrees)
-	out := helper.UploadFiles(files, action, direction, degrees, format, combine, pdf2oneimg)
+	out := tool.UploadFiles(files, action, direction, degrees, format, combine, pdf2oneimg)
 	log.Println("The file from server is :", out)
 
 	// upload + zip + download
