@@ -40,7 +40,6 @@ func img2pdf(imgFile string) string {
 }
 
 func imageToPDF(files []string, combine bool) (out []string, err error) {
-	// log.Println("files is:", files)
 	fileVars := strings.Join(files, " ")
 
 	//	mogrify -format pdf -- a.jpg c.png

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"pdftools/cmd/web/util"
+	"strings"
 )
 
 // UploadFile upload single file
@@ -37,6 +38,10 @@ func UploadFiles(files []*multipart.FileHeader, action, direction, degree, forma
 	for i := range files {
 		file, err := files[i].Open()
 		fileName := files[i].Filename
+		// remove whitespace in file name
+		fileName = strings.Join(strings.Fields(fileName), "")
+		// if "-" in file name then replace it
+		fileName = strings.ReplaceAll(fileName, "-", "^")
 		defer file.Close()
 		if err != nil {
 			log.Println("Open file error:", err)
@@ -44,7 +49,6 @@ func UploadFiles(files []*multipart.FileHeader, action, direction, degree, forma
 			return
 		}
 
-		//out, err := os.Create("./upload/" + files[i].Filename)
 		uploadedFile := "./upload/" + util.RandString(10) + fileName
 		out, err := os.Create(uploadedFile)
 		defer out.Close()
