@@ -52,8 +52,8 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	degrees := r.PostFormValue("degree")
 	format := r.PostFormValue("format")
 	combineStr := r.PostFormValue("combine") // combine images to single pdf(true|false)
-	log.Println("Upload combine:", combineStr)
-	log.Println("convert string to bool...")
+	// log.Println("Upload combine:", combineStr)
+	// log.Println("convert string to bool...")
 	if combineStr == "undefined" {
 		combineStr = "false"
 	}
@@ -75,9 +75,9 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	pages := r.PostFormValue("pages") // split
 
-	log.Println("action:", action, "degrees:", degrees)
+	// log.Println("action:", action, "degrees:", degrees)
 	out := tool.UploadFiles(files, action, direction, degrees, format, pages, combine, pdf2oneimg)
-	log.Println("The file from server is :", len(out))
+	// log.Println("The file from server is :", len(out))
 
 	j, err := json.Marshal(out)
 	if err != nil {

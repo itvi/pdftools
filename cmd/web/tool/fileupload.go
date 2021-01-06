@@ -66,7 +66,7 @@ func UploadFiles(files []*multipart.FileHeader, action, direction, degree, forma
 			return
 		}
 
-		log.Printf("File %s uploaded successfully!", fileName)
+		// log.Printf("File %s uploaded successfully!", fileName)
 
 		// // image to pdf
 		// if action == "img2pdf" {

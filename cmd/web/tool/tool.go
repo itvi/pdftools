@@ -47,35 +47,13 @@ func splitPDF(file, pageNums string) (out []string, err error) {
 	randFileName := util.RandString(10)
 
 	if pageNums == "" {
-		// plainCmd = "qpdf " + file + " ./upload/" + randFileName + ".pdf --split-pages"
-		// sliceCmd := strings.Fields(plainCmd)
-		// cmd := exec.Command(sliceCmd[0], sliceCmd[1:]...)
-		// if err := cmd.Run(); err != nil {
-		// 	log.Println("cmd run error:", err)
-		// 	return nil, err
-		// }
-
-		// dir, err := ioutil.ReadDir("./upload")
-		// if err != nil {
-		// 	log.Println("read dir error:", err)
-		// 	return nil, err
-		// }
-		// // x-01.pdf x-02.pdf ...
-		// //var pages []string
-		// for _, f := range dir {
-		// 	name := strings.Split(f.Name(), "-")[0]
-		// 	if strings.Contains(randFileName, name) {
-		// 		pages = append(pages, "./upload/"+f.Name())
-		// 	}
-		// }
-
 		plainCmd := "qpdf " + file + " ./upload/" + randFileName + ".pdf --split-pages"
-		p, err := splitPages(plainCmd, randFileName)
+		ps, err := splitPages(plainCmd, randFileName)
 		if err != nil {
 			log.Println("Split pages error:", err)
 			return nil, err
 		}
-		pages = p
+		pages = ps
 	} else {
 		plainCmd = "qpdf " + "--empty " + "--pages " + file + " " + pageNums + " -- " + "./upload/" + randFileName + ".pdf"
 		// split page range will return a single pdf file.
@@ -90,32 +68,12 @@ func splitPDF(file, pageNums string) (out []string, err error) {
 		newName := util.RandString(10)
 		plainCmd = "qpdf " + "./upload/" + randFileName + ".pdf" + " ./upload/" + newName + ".pdf --split-pages"
 
-		// sliceCmd = strings.Fields(plainCmd)
-		// cmd = exec.Command(sliceCmd[0], sliceCmd[1:]...)
-		// if err := cmd.Run(); err != nil {
-		// 	log.Println("cmd run error:", err)
-		// 	return nil, err
-		// }
-
-		// dir, err := ioutil.ReadDir("./upload")
-		// if err != nil {
-		// 	log.Println("read dir error:", err)
-		// 	return nil, err
-		// }
-		// // x-01.pdf x-02.pdf ...
-		// //var pages []string
-		// for _, f := range dir {
-		// 	name := strings.Split(f.Name(), "-")[0]
-		// 	if strings.Contains(newName, name) {
-		// 		pages = append(pages, "./upload/"+f.Name())
-		// 	}
-		// }
-		p, err := splitPages(plainCmd, newName)
+		ps, err := splitPages(plainCmd, newName)
 		if err != nil {
 			log.Println("Split pages error:", err)
 			return nil, err
 		}
-		pages = p
+		pages = ps
 	}
 
 	return pages, err

@@ -11,8 +11,8 @@
     border-radius: 0.2rem;
 }
 
-li.nav-item:hover{
-    background-color:#c5cae9;
+.navbar-nav .nav-link:hover{
+    background-color:#c5cae9 ;
 }
 
 .filepond--item {
