@@ -31,8 +31,10 @@ splitBtn.addEventListener('click',function(){
         return;
     }
 
+    var pages = document.getElementById('pages').value;
     var obj = {
-        action: 'split'
+        action: 'split',
+        pages: pages
     }
     
     spinner.style.display = "block";

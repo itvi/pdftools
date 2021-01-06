@@ -73,11 +73,11 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("action:", action, "degrees:", degrees)
-	out := tool.UploadFiles(files, action, direction, degrees, format, combine, pdf2oneimg)
-	log.Println("The file from server is :", out)
+	pages := r.PostFormValue("pages") // split
 
-	// upload + zip + download
+	log.Println("action:", action, "degrees:", degrees)
+	out := tool.UploadFiles(files, action, direction, degrees, format, pages, combine, pdf2oneimg)
+	log.Println("The file from server is :", len(out))
 
 	j, err := json.Marshal(out)
 	if err != nil {

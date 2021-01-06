@@ -16,19 +16,26 @@ function myAjaxUpload(files, obj) {
     formData.append("format",obj.format?obj.format:""); // pdf2img
     formData.append("combine",obj.combine); // [img2pdf] combine multiple images to single pdf
     formData.append("pdf2oneimg",obj.pdf2oneimg); // [pdf2img]
+    formData.append("pages",obj.pages);
     
     xhr.send(formData);
     xhr.onload = function() {
         if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
             console.log('upload success');
-            // switch button status
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('upload').hidden = false;
+            // // switch button status
+            // document.getElementById('spinner').style.display = 'none';
+            // document.getElementById('upload').hidden = false;
 
             var result = JSON.parse(xhr.responseText);
             var href = "http://" + window.location.host;
             window.location.href = href + "/download/" + result;
+        }else{
+            console.log("NOTHING");
+            notify(xhr.responseText+"请检查页数!");
         }
+        // switch button status
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('upload').hidden = false;
     };
     xhr.onerror = function(e) {
         console.log('error', e)

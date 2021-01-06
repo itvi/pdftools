@@ -8,7 +8,20 @@
 <div class="container">
 	<h3 class="mt-2">{{.Header}}</h3>
 	<input name="filepond" type="file"/>
-    <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
+
+    <div class="row g-3 align-items-center">
+        <div class="col">
+            <button id="upload" class="btn btn-primary">{{.BtnText}}</button>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" name="pages" id="pages" type="text" placeholder="1-3,5" />
+        </div>
+        <div class="col-auto">
+            <i class="fa fa-question-circle" title="示例如: 1-3,5
+                      表示拆分第1页，第2页，第3页，第5页。注意杠和逗号都要在英文输入法下输入!"></i>
+        </div>
+    </div>
+
     <button id="spinner" class="btn btn-primary" type="button" disabled style="display:none">
   	    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   		Loading...
