@@ -75,7 +75,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	pages := r.PostFormValue("pages") // split
 
-	// log.Println("action:", action, "degrees:", degrees)
+	log.Printf("Action %s From %s", action, r.RemoteAddr)
 	out := tool.UploadFiles(files, action, direction, degrees, format, pages, combine, pdf2oneimg)
 	// log.Println("The file from server is :", len(out))
 
